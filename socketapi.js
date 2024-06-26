@@ -19,8 +19,8 @@ function broadcast(message) {
   }
 }
 
-setInterval(() => {
-  broadcast(2);
-}, 3000); 
+// setInterval(() => {
+//   broadcast(2);
+// }, 3000); 
 
 module.exports = socketapi;
