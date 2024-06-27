@@ -1,14 +1,16 @@
 var socket = io();
 
 // keep track of what screen the game is on <type int>
-// states: start = 0; main = 1; end = 2; 
+// states: start = 0; main = 1; end = 2;
 var currentScreenState, nextScreenState;
 
 // keep track of & store current screen <type Graphics>
 var currentScreen;
+var currentQuestion, currentAnswers;
+var leftAnswer, rightAnswer;
 
 // store screens in Graphics objects
-var startScreen, mainScreen, endScreen;
+var startScreen, endScreen;
 var startButton;
 
 var width;
@@ -21,15 +23,16 @@ var quiz;
 
 async function loadQuiz() {
   try {
-    const response = await fetch('js/quizdata.json');
+    const response = await fetch("js/quizdata.json");
     quiz = await response.json();
+    randomQuestion();
   } catch (error) {
-    console.log('Error:', error);
+    console.log("Error:", error);
   }
 }
 loadQuiz();
 
-socket.on('score', function (msg) {
+socket.on("score", function (msg) {
   score = score + msg.points;
 });
 
@@ -40,7 +43,7 @@ function setup() {
 
   score = 0;
   startScreen = createGraphics(width, height);
-  mainScreen = createGraphics(width, height);
+  //mainScreen = createGraphics(width, height);
   endScreen = createGraphics(width, height);
   currentGameState = 0;
   currentScreenState = 0;
@@ -70,15 +73,15 @@ function changeScreenState(currentState) {
   var newState = 0;
   // assign new state based on current state
   switch (currentState) {
-    case 0:  // startScreen -> mainScreen
+    case 0: // startScreen -> mainScreen
       newState = 1;
       isGamePlaying = true;
       break;
-    case 1:  // mainScreen -> endScreen
+    case 1: // mainScreen -> endScreen
       newState = 2;
       isGamePlaying = false;
       break;
-    case 2:  // endScreen -> startScreen
+    case 2: // endScreen -> startScreen
       newState = 0;
       break;
   }
@@ -87,49 +90,57 @@ function changeScreenState(currentState) {
   return currentScreenState;
 }
 
-
 function drawScreen(screenState) {
   switch (screenState) {
     case 0:
-      drawStartScreen(); break;
+      drawStartScreen();
+      break;
     case 1:
-      drawMainScreen(); break;
+      drawMainScreen();
+      break;
     case 2:
-      drawEndScreen(); break;
+      drawEndScreen();
+      break;
   }
 }
 
 function drawStartScreen() {
   startScreen.background(100);
   startButton = createButton("start");
-  startButton.position(width / 2, height / 5 * 4);
-  startButton.style("font-family:monospace; font-weight:bold; font-size:24px; padding:10px; border-radius:10px;");
+  startButton.position(width / 2, (height / 5) * 4);
+  startButton.style(
+    "font-family:monospace; font-weight:bold; font-size:24px; padding:10px; border-radius:10px;"
+  );
   startButton.mousePressed(startButtonClicked);
   image(startScreen, 0, 0);
 }
 
 function drawMainScreen() {
-  mainScreen.background(237, 178, 90);
-  mainScreen.textSize(40);
-  mainScreen.textFont('Courier New');
-  mainScreen.text("Time Passed", 20, 40);
+  background(237, 178, 90);
+  textSize(40);
+  textFont("Courier New");
+  text("Time Passed", 20, 40);
   currentTime = floor(millis() / 1000);
-  mainScreen.text(currentTime, 20, 80);
+  text(currentTime, 20, 80);
+  textSize(200);
+  text(currentQuestion, 150, 250);
+  text(currentAnswers[leftAnswer], 0, 550);
+  text(currentAnswers[rightAnswer], 500, 550);
+  textSize(40);
 
-  mainScreen.text("Score", 500, 40);
-  mainScreen.text(score, 500, 80);
+  text("Score", 500, 40);
+  text(score, 500, 80);
 
   //setting up a "winning" condition
-  if (score > 2) {
-    mainScreen.push();
-    mainScreen.textSize(80);
-    mainScreen.fill('red');
-    mainScreen.text("YOU WIN", 20, 200);
-    mainScreen.pop();
+  if (score > 9) {
+    push();
+    textSize(80);
+    fill("red");
+    text("YOU WIN", 20, 200);
+    pop();
     changeScreenState(1);
     score = 0;
   }
-  image(mainScreen, 0, 0);
 }
 
 function drawEndScreen() {
@@ -154,10 +165,50 @@ function keyPressed() {
   if (keyCode === UP_ARROW && currentScreenState == 0) {
     startButtonClicked();
   }
-  if (keyCode === UP_ARROW && currentScreenState == 1) {
-    score++;
+  if (currentScreenState == 1) {
+    if (
+      (keyCode === "1".charCodeAt(0) && leftAnswer == 0) ||
+      (keyCode === "2".charCodeAt(0) && rightAnswer == 0)
+    ) {
+      score++;
+      randomQuestion();
+    } else {
+      score--;
+      randomQuestion();
+    }
   }
+  // if (keyCode === UP_ARROW && currentScreenState == 1) {
+  //   score++;
+  // }
   if (keyCode === UP_ARROW && currentScreenState == 2) {
     changeScreenState(2);
   }
 }
+
+function randomQuestion() {
+  var questions = quiz["math"]["questions"];
+  var questionAnswerPair =
+    questions[Math.floor(Math.random() * questions.length)];
+  currentQuestion = questionAnswerPair.question;
+  currentAnswers = questionAnswerPair.answers;
+  leftAnswer = Math.floor(Math.random() * 2);
+  rightAnswer = leftAnswer == 0 ? 1 : 0;
+}
+
+// function startGameTimer() {
+//   var start = Date.now();
+//   setInterval(function() {
+//       var delta = Date.now() - start; // milliseconds elapsed since start
+//       output(Math.floor(delta / 1000)); // in seconds
+//       // alternatively just show wall clock time:
+//       output(new Date().toUTCString());
+//   }, 1000); // update about every second
+// }
+
+// write a timer that assigns currentQuestion every 3 seconds
+// use setTimeout()
+setInterval(function () {
+  if (isGamePlaying) {
+    randomQuestion();
+  }
+}, 3000);
