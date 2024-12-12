@@ -12,7 +12,6 @@ var swappedQuestions = false;
 
 // store screens in Graphics objects
 var startScreen, endScreen;
-var startButton;
 
 var width;
 var height;
@@ -112,10 +111,33 @@ function drawScreen() {
 
 function drawStartScreen() {
   startScreen.background(100);
-  startButton = createButton("start");
-  startButton.position(width / 2, (height / 5) * 4);
+
+  startScreen.textSize(200);
+  startScreen.textStyle(BOLDITALIC);
+  startScreen.textFont("Times New Roman");
+  startScreen.fill("yellow");
+  var startText = "Quiz & Swish!";
+  startScreen.text(
+    startText,
+    width / 2 - startScreen.textWidth(startText) / 2,
+    height / 4
+  );
+
+  startScreen.textSize(100);
+  startScreen.textStyle(BOLDITALIC);
+  startScreen.textFont("Times New Roman");
+  startScreen.fill("yellow");
+  var startText = "by FTC Disaster Manager 13295";
+  startScreen.text(
+    startText,
+    width / 2 - startScreen.textWidth(startText) / 2,
+    height / 2
+  );
+
+  var startButton = createButton("GET READY!");
+  startButton.position(width / 2 - 100, (height / 5) * 4);
   startButton.style(
-    "font-family:monospace; font-weight:bold; font-size:24px; padding:10px; border-radius:10px;"
+    "font-family:monospace; font-weight:bold; font-size:60px; padding:10px; border-radius:10px;"
   );
   startButton.mousePressed(startNewGame);
   image(startScreen, 0, 0);
@@ -124,6 +146,7 @@ function drawStartScreen() {
 function drawMainScreen() {
   background(237, 178, 90);
   textFont("Courier New");
+  textStyle(BOLD);
 
   var delta = Date.now() - gameStartTime; // milliseconds elapsed since start
   secondsElapsed = Math.floor(delta / 1000);
@@ -152,18 +175,18 @@ function drawMainScreen() {
   // show scores
   textSize(60);
   var player1ScoreText = "Player 1: " + player1Score;
-  text(player1ScoreText, 0, 80);
+  text(player1ScoreText, 10, 80);
 
   var player2ScoreText = "Player 2: " + player2Score;
-  text(player2ScoreText, width - textWidth(player2ScoreText), 80);
+  text(player2ScoreText, width - textWidth(player2ScoreText) - 10, 80);
 
   // show quiz question & possible answers
   textSize(80);
   text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, height / 2);
   var leftAnswerText = currentAnswers[leftAnswer];
-  text(leftAnswerText, 0, height - 100);
+  text(leftAnswerText, 10, height - 100);
   var rightAnswerText = currentAnswers[rightAnswer];
-  text(rightAnswerText, width - textWidth(rightAnswerText), height - 100);
+  text(rightAnswerText, width - textWidth(rightAnswerText) - 10, height - 100);
 
   // if secondsElasped is greater than gameLength, change screen to endScreen
   if (secondsElapsed >= gameLength) {
@@ -192,6 +215,13 @@ function drawEndScreen() {
     winnerText,
     width / 2 - endScreen.textWidth(winnerText) / 2,
     height / 2
+  );
+
+  scoreText = player1Score + " - " + player2Score;
+  endScreen.text(
+    scoreText,
+    width / 2 - endScreen.textWidth(scoreText) / 2,
+    height / 2 + 100
   );
   image(endScreen, 0, 0);
 }
