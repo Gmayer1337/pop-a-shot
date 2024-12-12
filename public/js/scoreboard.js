@@ -18,7 +18,8 @@ var height;
 
 // boolean to determine if game is currently active
 var isGamePlaying;
-var score = 0;
+var player1Score = 0;
+var player2Score = 0;
 var quiz;
 
 async function loadQuiz() {
@@ -32,16 +33,17 @@ async function loadQuiz() {
 }
 loadQuiz();
 
-socket.on("score", function (msg) {
-  score = score + msg.points;
-});
+// socket.on("score", function (msg) {
+//   score = score + msg.points;
+// });
 
 function setup() {
   width = windowWidth;
   height = windowHeight;
   createCanvas(width, height);
 
-  score = 0;
+  player1Score = 0;
+  player2Score = 0;
   startScreen = createGraphics(width, height);
   //mainScreen = createGraphics(width, height);
   endScreen = createGraphics(width, height);
@@ -66,7 +68,7 @@ function windowResized() {
   width = windowWidth;
   height = windowHeight;
   drawScreen(currentScreenState);
-  //resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function changeScreenState(currentState) {
@@ -119,17 +121,21 @@ function drawMainScreen() {
   background(237, 178, 90);
   textSize(40);
   textFont("Courier New");
-  text("Time Passed", 20, 40);
-  currentTime = floor(millis() / 1000);
-  text(currentTime, 20, 80);
+  // text("Time Passed", 20, 40);
+  // currentTime = floor(millis() / 1000);
+  // text(currentTime, 20, 80);
   textSize(200);
-  text(currentQuestion, 150, 250);
-  text(currentAnswers[leftAnswer], 0, 550);
-  text(currentAnswers[rightAnswer], 500, 550);
-  textSize(40);
+  text(currentQuestion, 350, 400);
+  text(currentAnswers[leftAnswer], 0, 1000);
+  text(currentAnswers[rightAnswer], 1500, 1000);
+  
+  textSize(90);
+  text("Player 1:", 50, 80);
+  text(player1Score, 550, 80);
 
-  text("Score", 500, 40);
-  text(score, 500, 80);
+  text("Player 2:", 1250, 80);
+  text(player2Score, 1750, 80);
+
 
   //setting up a "winning" condition
   if (score > 9) {
@@ -166,17 +172,24 @@ function keyPressed() {
     startButtonClicked();
   }
   if (currentScreenState == 1) {
-    if (
-      (keyCode === "1".charCodeAt(0) && leftAnswer == 0) ||
-      (keyCode === "2".charCodeAt(0) && rightAnswer == 0)
-    ) {
-      score++;
+    if (keyCode === "1".charCodeAt(0) || keyCode === "9".charCodeAt(0)) {
+      if (leftAnswer == 0) {
+        player1Score += 2;
+      }
       randomQuestion();
-    } else {
-      score--;
+      drawMainScreen();
+    }
+
+    if (keyCode === "2".charCodeAt(0) || keyCode === "0".charCodeAt(0)) {
+      if (rightAnswer == 0) {
+        player2Score += 2;
+      }
+
       randomQuestion();
+      drawMainScreen();
     }
   }
+
   // if (keyCode === UP_ARROW && currentScreenState == 1) {
   //   score++;
   // }
@@ -207,8 +220,8 @@ function randomQuestion() {
 
 // write a timer that assigns currentQuestion every 3 seconds
 // use setTimeout()
-setInterval(function () {
-  if (isGamePlaying) {
-    randomQuestion();
-  }
-}, 3000);
+// setInterval(function () {
+//   if (isGamePlaying) {
+//     randomQuestion();
+//   }
+// }, 30000);
