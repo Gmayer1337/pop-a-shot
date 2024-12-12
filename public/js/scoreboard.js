@@ -7,7 +7,8 @@ var currentScreenState, nextScreenState;
 // keep track of & store current screen <type Graphics>
 var currentScreen;
 var currentQuestion, currentAnswers;
-var leftAnswer, rightAnswer;
+var wrongAnswer, correctAnswer, leftAnswer, rightAnswer;
+var swappedQuestions = false;
 
 // store screens in Graphics objects
 var startScreen, endScreen;
@@ -124,18 +125,19 @@ function drawMainScreen() {
   // text("Time Passed", 20, 40);
   // currentTime = floor(millis() / 1000);
   // text(currentTime, 20, 80);
-  textSize(200);
-  text(currentQuestion, 350, 400);
-  text(currentAnswers[leftAnswer], 0, 1000);
-  text(currentAnswers[rightAnswer], 1500, 1000);
+  textSize(80);
+  text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, height / 2);
+  let leftAnswerText = currentAnswers[leftAnswer]
+  text(leftAnswerText, 0, height - 100);
+  let rightAnswerText = currentAnswers[rightAnswer];
+  text(rightAnswerText, width - textWidth(rightAnswerText), height - 100);
   
   textSize(90);
-  text("Player 1:", 50, 80);
-  text(player1Score, 550, 80);
+  let player1ScoreText = "Player 1: " + player1Score;
+  text(player1ScoreText, 0, 80);
 
-  text("Player 2:", 1250, 80);
-  text(player2Score, 1750, 80);
-
+  let player2ScoreText = "Player 2: " + player2Score;
+  text(player2ScoreText, width - textWidth(player2ScoreText), 80);
 
   //setting up a "winning" condition
   if (score > 9) {
@@ -168,25 +170,37 @@ function startButtonClicked() {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW && currentScreenState == 0) {
-    startButtonClicked();
+  if (currentScreenState == 0) {
+    if (keyCode === " ".charCodeAt(0)) startButtonClicked();
   }
-  if (currentScreenState == 1) {
+  else if (currentScreenState == 1) {
     if (keyCode === "1".charCodeAt(0) || keyCode === "9".charCodeAt(0)) {
-      if (leftAnswer == 0) {
+      if (leftAnswer == correctAnswer) {
         player1Score += 2;
+      } else {
+        player2Score += 1;
       }
       randomQuestion();
-      drawMainScreen();
     }
 
     if (keyCode === "2".charCodeAt(0) || keyCode === "0".charCodeAt(0)) {
-      if (rightAnswer == 0) {
+      if (rightAnswer == correctAnswer) {
         player2Score += 2;
+      } else {
+        player1Score += 1;
       }
-
       randomQuestion();
-      drawMainScreen();
+    }
+
+    if (keyCode === " ".charCodeAt(0) && !swappedQuestions) {
+      swappedQuestions = true;
+      tempAnswer = rightAnswer;
+      rightAnswer = leftAnswer;
+      leftAnswer = tempAnswer;
+      setTimeout(function () {
+          randomQuestion();
+          swappedQuestions = false;
+        }, 3000);   
     }
   }
 
@@ -199,29 +213,29 @@ function keyPressed() {
 }
 
 function randomQuestion() {
-  var questions = quiz["math"]["questions"];
-  var questionAnswerPair =
-    questions[Math.floor(Math.random() * questions.length)];
+  var questions = quiz["robotics"]["questions"];
+  var questionAnswerPair = questions[Math.floor(Math.random() * questions.length)];
   currentQuestion = questionAnswerPair.question;
   currentAnswers = questionAnswerPair.answers;
-  leftAnswer = Math.floor(Math.random() * 2);
-  rightAnswer = leftAnswer == 0 ? 1 : 0;
+  correctAnswer = 0;
+  wrongAnswer = Math.floor(Math.random() * (currentAnswers.length - 1)) + 1;
+  if (Math.random() < .5) {
+    leftAnswer = correctAnswer;
+    rightAnswer = wrongAnswer;
+  } else {
+    leftAnswer = wrongAnswer;
+    rightAnswer = correctAnswer;
+  }
 }
 
-// function startGameTimer() {
-//   var start = Date.now();
-//   setInterval(function() {
-//       var delta = Date.now() - start; // milliseconds elapsed since start
-//       output(Math.floor(delta / 1000)); // in seconds
-//       // alternatively just show wall clock time:
-//       output(new Date().toUTCString());
-//   }, 1000); // update about every second
-// }
-
-// write a timer that assigns currentQuestion every 3 seconds
-// use setTimeout()
-// setInterval(function () {
-//   if (isGamePlaying) {
-//     randomQuestion();
-//   }
-// }, 30000);
+function startGameTimer() {
+  // var start = Date.now();
+  setInterval(function() {
+    drawScreen(currentScreenState)
+      // var delta = Date.now() - start; // milliseconds elapsed since start
+      // output(Math.floor(delta / 1000)); // in seconds
+      // // alternatively just show wall clock time:
+      // output(new Date().toUTCString());
+  }, 100); // update about every second
+}
+startGameTimer();

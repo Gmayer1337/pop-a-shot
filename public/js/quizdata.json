@@ -93,5 +93,248 @@
             }
         ]
     },
-    "robotics": {}
+    "robotics": {
+        "questions": [
+            {
+                "question": "What is a robot?",
+                "answers": [
+                    "Machine",
+                    "Animal",
+                    "Superhero",
+                    "Ice cream"
+                ],
+                "correct_answer": "Machine"
+            },
+            {
+                "question": "Which part of a robot helps it move?",
+                "answers": [
+                    "Motor",
+                    "Banana",
+                    "Shoe",
+                    "Cloud"
+                ],
+                "correct_answer": "Motor"
+            },
+            {
+                "question": "What detects light for a robot?",
+                "answers": [
+                    "Photocell",
+                    "Nose",
+                    "Book",
+                    "Pencil"
+                ],
+                "correct_answer": "Photocell"
+            },
+            {
+                "question": "What material is a robot's frame made of?",
+                "answers": [
+                    "Metal",
+                    "Jelly",
+                    "Bubble",
+                    "Feather"
+                ],
+                "correct_answer": "Metal"
+            },
+            {
+                "question": "Which language helps program robots?",
+                "answers": [
+                    "Python",
+                    "Unicorn",
+                    "Dragon",
+                    "Rainbow"
+                ],
+                "correct_answer": "Python"
+            },
+            {
+                "question": "What do robot sensors do?",
+                "answers": [
+                    "Detect",
+                    "Dance",
+                    "Sing",
+                    "Cook"
+                ],
+                "correct_answer": "Detect"
+            },
+            {
+                "question": "What is the robot's 'brain' called?",
+                "answers": [
+                    "Controller",
+                    "Hat",
+                    "Balloon",
+                    "Sandwich"
+                ],
+                "correct_answer": "Controller"
+            },
+            {
+                "question": "What powers a robot?",
+                "answers": [
+                    "Battery",
+                    "Candy",
+                    "Pillow",
+                    "Ball"
+                ],
+                "correct_answer": "Battery"
+            },
+            {
+                "question": "Another name for a robot's arm is?",
+                "answers": [
+                    "Manipulator",
+                    "Wing",
+                    "Tail",
+                    "Claw"
+                ],
+                "correct_answer": "Manipulator"
+            },
+            {
+                "question": "Which sensor detects objects?",
+                "answers": [
+                    "Proximity",
+                    "Ear",
+                    "Leaf",
+                    "Star"
+                ],
+                "correct_answer": "Proximity"
+            },
+            {
+                "question": "Robots in factories are called?",
+                "answers": [
+                    "Industrial",
+                    "Cosmic",
+                    "Pirate",
+                    "Explorer"
+                ],
+                "correct_answer": "Industrial"
+            },
+            {
+                "question": "A robot's movement ability is called?",
+                "answers": [
+                    "Mobility",
+                    "Flying",
+                    "Swimming",
+                    "Jumping"
+                ],
+                "correct_answer": "Mobility"
+            },
+            {
+                "question": "The robot's frame is also known as?",
+                "answers": [
+                    "Chassis",
+                    "Backpack",
+                    "Treasure",
+                    "Blanket"
+                ],
+                "correct_answer": "Chassis"
+            },
+            {
+                "question": "Which sensor detects temperature?",
+                "answers": [
+                    "Thermistor",
+                    "Mittens",
+                    "Ice",
+                    "Rocket"
+                ],
+                "correct_answer": "Thermistor"
+            },
+            {
+                "question": "A robot's power source is often?",
+                "answers": [
+                    "Battery",
+                    "Apple",
+                    "Dinosaur",
+                    "Kite"
+                ],
+                "correct_answer": "Battery"
+            },
+            {
+                "question": "Which part helps a robot 'see'?",
+                "answers": [
+                    "Camera",
+                    "Glasses",
+                    "Mirror",
+                    "Flashlight"
+                ],
+                "correct_answer": "Camera"
+            },
+            {
+                "question": "Which tech lets robots learn from data?",
+                "answers": [
+                    "Machine",
+                    "Wizard",
+                    "Giant",
+                    "Alien"
+                ],
+                "correct_answer": "Machine"
+            },
+            {
+                "question": "Where does 'robot' come from?",
+                "answers": [
+                    "Czech",
+                    "Moon",
+                    "Jungle",
+                    "Space"
+                ],
+                "correct_answer": "Czech"
+            },
+            {
+                "question": "Which part holds the software?",
+                "answers": [
+                    "Controller",
+                    "Pumpkin",
+                    "Balloon",
+                    "Broom"
+                ],
+                "correct_answer": "Controller"
+            },
+            {
+                "question": "Small robots are used for?",
+                "answers": [
+                    "Education",
+                    "Skating",
+                    "Fishing",
+                    "Climbing"
+                ],
+                "correct_answer": "Education"
+            },
+            {
+                "question": "Which robot part rotates?",
+                "answers": [
+                    "Joint",
+                    "Door",
+                    "Wheel",
+                    "Slide"
+                ],
+                "correct_answer": "Joint"
+            },
+            {
+                "question": "Which sensor detects sound?",
+                "answers": [
+                    "Microphone",
+                    "Drum",
+                    "Guitar",
+                    "Horn"
+                ],
+                "correct_answer": "Microphone"
+            },
+            {
+                "question": "Robots used at home are called?",
+                "answers": [
+                    "Domestic",
+                    "Circus",
+                    "Jungle",
+                    "Ocean"
+                ],
+                "correct_answer": "Domestic"
+            },
+            {
+                "question": "What part allows a robot to grasp?",
+                "answers": [
+                    "Gripper",
+                    "Monkey",
+                    "Tree",
+                    "Magic"
+                ],
+                "correct_answer": "Gripper"
+            }
+        ]
+    }    
 }
