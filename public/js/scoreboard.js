@@ -1,13 +1,13 @@
 var socket = io();
 
-// keep track of what screen the game is on <type int>
-// states: start = 0; main = 1; end = 2;
-var currentScreenState, nextScreenState;
+var currentScreenState;
 
 // keep track of & store current screen <type Graphics>
 var currentScreen;
 var currentQuestion, currentAnswers;
 var wrongAnswer, correctAnswer, leftAnswer, rightAnswer;
+var gameStartTime;
+var shotClockStart;
 var swappedQuestions = false;
 
 // store screens in Graphics objects
@@ -22,6 +22,7 @@ var isGamePlaying;
 var player1Score = 0;
 var player2Score = 0;
 var quiz;
+var gameLength = 30;
 
 async function loadQuiz() {
   try {
@@ -38,6 +39,7 @@ loadQuiz();
 //   score = score + msg.points;
 // });
 
+// this is only run once
 function setup() {
   width = windowWidth;
   height = windowHeight;
@@ -72,10 +74,11 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function changeScreenState(currentState) {
+function changeScreenState() {
   var newState = 0;
+  removeElements();
   // assign new state based on current state
-  switch (currentState) {
+  switch (currentScreenState) {
     case 0: // startScreen -> mainScreen
       newState = 1;
       isGamePlaying = true;
@@ -93,8 +96,8 @@ function changeScreenState(currentState) {
   return currentScreenState;
 }
 
-function drawScreen(screenState) {
-  switch (screenState) {
+function drawScreen() {
+  switch (currentScreenState) {
     case 0:
       drawStartScreen();
       break;
@@ -114,66 +117,89 @@ function drawStartScreen() {
   startButton.style(
     "font-family:monospace; font-weight:bold; font-size:24px; padding:10px; border-radius:10px;"
   );
-  startButton.mousePressed(startButtonClicked);
+  startButton.mousePressed(startNewGame);
   image(startScreen, 0, 0);
 }
 
 function drawMainScreen() {
   background(237, 178, 90);
-  textSize(40);
   textFont("Courier New");
-  // text("Time Passed", 20, 40);
-  // currentTime = floor(millis() / 1000);
-  // text(currentTime, 20, 80);
-  textSize(80);
-  text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, height / 2);
-  let leftAnswerText = currentAnswers[leftAnswer]
-  text(leftAnswerText, 0, height - 100);
-  let rightAnswerText = currentAnswers[rightAnswer];
-  text(rightAnswerText, width - textWidth(rightAnswerText), height - 100);
-  
-  textSize(90);
-  let player1ScoreText = "Player 1: " + player1Score;
+
+  var delta = Date.now() - gameStartTime; // milliseconds elapsed since start
+  secondsElapsed = Math.floor(delta / 1000);
+
+  // show game timer
+  textSize(60);
+  var minutes = Math.floor((gameLength - secondsElapsed) / 60);
+  var seconds = (gameLength - secondsElapsed) % 60;
+  // pad seconds if less than 10
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  var timerText = "Timer: " + minutes + ":" + seconds;
+  text(timerText, width / 2 - textWidth(timerText) / 2, 80);
+  currentTime = floor(millis() / 1000);
+
+  // show shot clock
+  if (shotClockStart) {
+    var shotTimer = Math.floor((Date.now() - shotClockStart) / 1000); // milliseconds elapsed since start
+    var shotClock = 3 - shotTimer;
+    textSize(60);
+    var shotClockText = "Shot Clock: " + shotClock;
+    text(shotClockText, width / 2 - textWidth(shotClockText) / 2, 160);
+  }
+
+  // show scores
+  textSize(60);
+  var player1ScoreText = "Player 1: " + player1Score;
   text(player1ScoreText, 0, 80);
 
-  let player2ScoreText = "Player 2: " + player2Score;
+  var player2ScoreText = "Player 2: " + player2Score;
   text(player2ScoreText, width - textWidth(player2ScoreText), 80);
 
-  //setting up a "winning" condition
-  if (score > 9) {
-    push();
-    textSize(80);
-    fill("red");
-    text("YOU WIN", 20, 200);
-    pop();
-    changeScreenState(1);
-    score = 0;
+  // show quiz question & possible answers
+  textSize(80);
+  text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, height / 2);
+  var leftAnswerText = currentAnswers[leftAnswer];
+  text(leftAnswerText, 0, height - 100);
+  var rightAnswerText = currentAnswers[rightAnswer];
+  text(rightAnswerText, width - textWidth(rightAnswerText), height - 100);
+
+  // if secondsElasped is greater than gameLength, change screen to endScreen
+  if (secondsElapsed >= gameLength) {
+    changeScreenState();
   }
 }
 
 function drawEndScreen() {
-  var message = "YOU WIN";
-  endScreen.background(0);
-  endScreen.fill(255);
-  endScreen.textSize(100);
-  endScreen.textStyle(BOLD);
-  endScreen.textAlign(CENTER);
-  endScreen.text(message, width / 2, (height + 200) / 2);
-  image(endScreen, 0, 0);
-}
+  endScreen.background(100);
+  endScreen.textSize(60);
+  endScreen.fill("yellow");
+  endGameText = "Game Over";
 
-// remove button element from DOM
-// change currentScreenState from 0 -> 1
-function startButtonClicked() {
-  removeElements();
-  changeScreenState(0);
+  winnerText =
+    player1Score > player2Score ? "Player 1 wins!" : "Player 2 wins!";
+  // show winner or tie game if scores are equal
+  if (player1Score === player2Score) {
+    winnerText = "Tie Game!";
+  }
+  endScreen.text(
+    endGameText,
+    width / 2 - endScreen.textWidth(endGameText) / 2,
+    height / 4
+  );
+  endScreen.text(
+    winnerText,
+    width / 2 - endScreen.textWidth(winnerText) / 2,
+    height / 2
+  );
+  image(endScreen, 0, 0);
 }
 
 function keyPressed() {
   if (currentScreenState == 0) {
-    if (keyCode === " ".charCodeAt(0)) startButtonClicked();
-  }
-  else if (currentScreenState == 1) {
+    if (keyCode === " ".charCodeAt(0)) startNewGame();
+  } else if (currentScreenState == 1) {
     if (keyCode === "1".charCodeAt(0) || keyCode === "9".charCodeAt(0)) {
       if (leftAnswer == correctAnswer) {
         player1Score += 2;
@@ -198,28 +224,41 @@ function keyPressed() {
       rightAnswer = leftAnswer;
       leftAnswer = tempAnswer;
       setTimeout(function () {
-          randomQuestion();
-          swappedQuestions = false;
-        }, 3000);   
+        randomQuestion();
+        swappedQuestions = false;
+        shotClockStart = null;
+      }, 3000);
+      shotClockStart = Date.now();
+    }
+
+    if (keyCode === "5".charCodeAt(0)) {
+      changeScreenState();
+    }
+  } else if (currentScreenState == 2) {
+    if (keyCode === " ".charCodeAt(0)) {
+      changeScreenState();
     }
   }
+}
 
-  // if (keyCode === UP_ARROW && currentScreenState == 1) {
-  //   score++;
-  // }
-  if (keyCode === UP_ARROW && currentScreenState == 2) {
-    changeScreenState(2);
-  }
+function startNewGame() {
+  changeScreenState();
+  player1Score = 0;
+  player2Score = 0;
+  gameStartTime = Date.now();
+  randomQuestion();
 }
 
 function randomQuestion() {
   var questions = quiz["robotics"]["questions"];
-  var questionAnswerPair = questions[Math.floor(Math.random() * questions.length)];
+  shotClockStart = null;
+  var questionAnswerPair =
+    questions[Math.floor(Math.random() * questions.length)];
   currentQuestion = questionAnswerPair.question;
   currentAnswers = questionAnswerPair.answers;
   correctAnswer = 0;
   wrongAnswer = Math.floor(Math.random() * (currentAnswers.length - 1)) + 1;
-  if (Math.random() < .5) {
+  if (Math.random() < 0.5) {
     leftAnswer = correctAnswer;
     rightAnswer = wrongAnswer;
   } else {
@@ -229,13 +268,8 @@ function randomQuestion() {
 }
 
 function startGameTimer() {
-  // var start = Date.now();
-  setInterval(function() {
-    drawScreen(currentScreenState)
-      // var delta = Date.now() - start; // milliseconds elapsed since start
-      // output(Math.floor(delta / 1000)); // in seconds
-      // // alternatively just show wall clock time:
-      // output(new Date().toUTCString());
-  }, 100); // update about every second
+  setInterval(function () {
+    drawScreen(currentScreenState);
+  }, 100);
 }
 startGameTimer();
