@@ -34,9 +34,9 @@ async function loadQuiz() {
 }
 loadQuiz();
 
-// socket.on("score", function (msg) {
-//   score = score + msg.points;
-// });
+socket.on("basket", function (msg) {
+  shotMade(msg.num);
+});
 
 // this is only run once
 function setup() {
@@ -231,21 +231,11 @@ function keyPressed() {
     if (keyCode === " ".charCodeAt(0)) startNewGame();
   } else if (currentScreenState == 1) {
     if (keyCode === "1".charCodeAt(0) || keyCode === "9".charCodeAt(0)) {
-      if (leftAnswer == correctAnswer) {
-        player1Score += 2;
-      } else {
-        player2Score += 1;
-      }
-      randomQuestion();
+      shotMade(1);
     }
 
     if (keyCode === "2".charCodeAt(0) || keyCode === "0".charCodeAt(0)) {
-      if (rightAnswer == correctAnswer) {
-        player2Score += 2;
-      } else {
-        player1Score += 1;
-      }
-      randomQuestion();
+      shotMade(2);
     }
 
     if (keyCode === " ".charCodeAt(0) && !swappedQuestions) {
@@ -276,6 +266,24 @@ function startNewGame() {
   player1Score = 0;
   player2Score = 0;
   gameStartTime = Date.now();
+  randomQuestion();
+}
+
+function shotMade(basket) {
+  if (!isGamePlaying) return;
+  if (basket == 1) {
+    if (leftAnswer == correctAnswer) {
+      player1Score += 2;
+    } else {
+      player2Score += 1;
+    }
+  } else if (basket == 2) {
+    if (rightAnswer == correctAnswer) {
+      player2Score += 2;
+    } else {
+      player1Score += 1;
+    }
+  }
   randomQuestion();
 }
 
