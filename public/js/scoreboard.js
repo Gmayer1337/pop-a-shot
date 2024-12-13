@@ -21,7 +21,7 @@ var isGamePlaying;
 var player1Score = 0;
 var player2Score = 0;
 var quiz;
-var gameLength = 120;
+var gameLength = 45;
 
 async function loadQuiz() {
   try {
@@ -135,7 +135,7 @@ function drawStartScreen() {
   );
 
   var startButton = createButton("GET READY!");
-  startButton.position(width / 2 - 100, (height / 5) * 4);
+  startButton.position(width / 2 - 140, (height / 5) * 4);
   startButton.style(
     "font-family:monospace; font-weight:bold; font-size:60px; padding:10px; border-radius:10px;"
   );
