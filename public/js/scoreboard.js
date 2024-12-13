@@ -124,8 +124,6 @@ function drawStartScreen() {
   );
 
   startScreen.textSize(100);
-  startScreen.textStyle(BOLDITALIC);
-  startScreen.textFont("Times New Roman");
   startScreen.fill("yellow");
   var startText = "by FTC Disaster Manager 13295";
   startScreen.text(
@@ -199,7 +197,8 @@ function drawMainScreen() {
 
 function drawEndScreen() {
   endScreen.background(100);
-  endScreen.textSize(60);
+  endScreen.textSize(100);
+  endScreen.textStyle(BOLDITALIC);
   endScreen.fill("yellow");
   endGameText = "Game Over";
 
