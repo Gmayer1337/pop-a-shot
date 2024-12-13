@@ -21,7 +21,7 @@ var isGamePlaying;
 var player1Score = 0;
 var player2Score = 0;
 var quiz;
-var gameLength = 30;
+var gameLength = 120;
 
 async function loadQuiz() {
   try {
@@ -180,9 +180,12 @@ function drawMainScreen() {
   var player2ScoreText = "Player 2: " + player2Score;
   text(player2ScoreText, width - textWidth(player2ScoreText) - 10, 80);
 
-  // show quiz question & possible answers
-  textSize(80);
+  // show quiz question
+  textSize(50);
   text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, height / 2);
+
+  // show possible answers
+  textSize(80);
   var leftAnswerText = currentAnswers[leftAnswer];
   text(leftAnswerText, 10, height - 100);
   var rightAnswerText = currentAnswers[rightAnswer];
@@ -246,7 +249,6 @@ function keyPressed() {
       setTimeout(function () {
         randomQuestion();
         swappedQuestions = false;
-        shotClockStart = null;
       }, 3000);
       shotClockStart = Date.now();
     }

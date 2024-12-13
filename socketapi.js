@@ -1,7 +1,18 @@
 const io = require("socket.io")();
 const Gpio = require("onoff").Gpio;
-const isPi = require("detect-rpi");
 const readline = require("readline");
+const fs = require("fs");
+
+function isRaspberryPi() {
+  try {
+    const model = fs
+      .readFileSync("/sys/firmware/devicetree/base/model", "utf8")
+      .toLowerCase();
+    return model.includes("raspberry pi");
+  } catch (err) {
+    return false;
+  }
+}
 
 const socketapi = {
   io: io,
@@ -24,7 +35,8 @@ function broadcast(message) {
 }
 module.exports = socketapi;
 
-if (isPi()) {
+if (isRaspberryPi()) {
+  console.log("Yup, this is a Raspberry Pi");
   // https://stackoverflow.com/questions/78173749/use-raspberry-pi-4-gpio-with-node-js/78184108#78184108
   // GPIO18 -> 530
   // GPIO23 -> 535
@@ -45,6 +57,7 @@ if (isPi()) {
     broadcast(2);
   });
 } else {
+  console.log("Not a Pi, using keyboard input");
   readline.emitKeypressEvents(process.stdin);
 
   if (process.stdin.setRawMode != null) {

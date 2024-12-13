@@ -1,340 +1,165 @@
 {
-    "math": {
-        "questions": [
-            {
-                "question": "6 + 7",
-                "answers": [
-                    "13",
-                    "12",
-                    "14",
-                    "11"
-                ]
-            },
-            {
-                "question": "15 - 5",
-                "answers": [
-                    "10",
-                    "9",
-                    "11",
-                    "8"
-                ]
-            },
-            {
-                "question": "3 * 4",
-                "answers": [
-                    "12",
-                    "11",
-                    "13",
-                    "10"
-                ]
-            },
-            {
-                "question": "20 / 5",
-                "answers": [
-                    "4",
-                    "5",
-                    "3",
-                    "6"
-                ]
-            },
-            {
-                "question": "9 - 3",
-                "answers": [
-                    "6",
-                    "7",
-                    "5",
-                    "8"
-                ]
-            },
-            {
-                "question": "2 * 5",
-                "answers": [
-                    "10",
-                    "9",
-                    "11",
-                    "8"
-                ]
-            },
-            {
-                "question": "18 / 3",
-                "answers": [
-                    "6",
-                    "5",
-                    "7",
-                    "4"
-                ]
-            },
-            {
-                "question": "8 + 4",
-                "answers": [
-                    "12",
-                    "11",
-                    "13",
-                    "10"
-                ]
-            },
-            {
-                "question": "14 - 7",
-                "answers": [
-                    "7",
-                    "6",
-                    "8",
-                    "5"
-                ]
-            },
-            {
-                "question": "5 * 3",
-                "answers": [
-                    "15",
-                    "14",
-                    "16",
-                    "13"
-                ]
-            }
-        ]
-    },
-    "robotics": {
-        "questions": [
-            {
-                "question": "What is a robot?",
-                "answers": [
-                    "Machine",
-                    "Animal",
-                    "Superhero",
-                    "Ice cream"
-                ],
-                "correct_answer": "Machine"
-            },
-            {
-                "question": "Which part of a robot helps it move?",
-                "answers": [
-                    "Motor",
-                    "Banana",
-                    "Shoe",
-                    "Cloud"
-                ],
-                "correct_answer": "Motor"
-            },
-            {
-                "question": "What detects light for a robot?",
-                "answers": [
-                    "Photocell",
-                    "Nose",
-                    "Book",
-                    "Pencil"
-                ],
-                "correct_answer": "Photocell"
-            },
-            {
-                "question": "What material is a robot's frame made of?",
-                "answers": [
-                    "Metal",
-                    "Jelly",
-                    "Bubble",
-                    "Feather"
-                ],
-                "correct_answer": "Metal"
-            },
-            {
-                "question": "Which language helps program robots?",
-                "answers": [
-                    "Python",
-                    "Unicorn",
-                    "Dragon",
-                    "Rainbow"
-                ],
-                "correct_answer": "Python"
-            },
-            {
-                "question": "What do robot sensors do?",
-                "answers": [
-                    "Detect",
-                    "Dance",
-                    "Sing",
-                    "Cook"
-                ],
-                "correct_answer": "Detect"
-            },
-            {
-                "question": "What is the robot's 'brain' called?",
-                "answers": [
-                    "Controller",
-                    "Hat",
-                    "Balloon",
-                    "Sandwich"
-                ],
-                "correct_answer": "Controller"
-            },
-            {
-                "question": "What powers a robot?",
-                "answers": [
-                    "Battery",
-                    "Candy",
-                    "Pillow",
-                    "Ball"
-                ],
-                "correct_answer": "Battery"
-            },
-            {
-                "question": "Another name for a robot's arm is?",
-                "answers": [
-                    "Manipulator",
-                    "Wing",
-                    "Tail",
-                    "Claw"
-                ],
-                "correct_answer": "Manipulator"
-            },
-            {
-                "question": "Which sensor detects objects?",
-                "answers": [
-                    "Proximity",
-                    "Ear",
-                    "Leaf",
-                    "Star"
-                ],
-                "correct_answer": "Proximity"
-            },
-            {
-                "question": "Robots in factories are called?",
-                "answers": [
-                    "Industrial",
-                    "Cosmic",
-                    "Pirate",
-                    "Explorer"
-                ],
-                "correct_answer": "Industrial"
-            },
-            {
-                "question": "A robot's movement ability is called?",
-                "answers": [
-                    "Mobility",
-                    "Flying",
-                    "Swimming",
-                    "Jumping"
-                ],
-                "correct_answer": "Mobility"
-            },
-            {
-                "question": "The robot's frame is also known as?",
-                "answers": [
-                    "Chassis",
-                    "Backpack",
-                    "Treasure",
-                    "Blanket"
-                ],
-                "correct_answer": "Chassis"
-            },
-            {
-                "question": "Which sensor detects temperature?",
-                "answers": [
-                    "Thermistor",
-                    "Mittens",
-                    "Ice",
-                    "Rocket"
-                ],
-                "correct_answer": "Thermistor"
-            },
-            {
-                "question": "A robot's power source is often?",
-                "answers": [
-                    "Battery",
-                    "Apple",
-                    "Dinosaur",
-                    "Kite"
-                ],
-                "correct_answer": "Battery"
-            },
-            {
-                "question": "Which part helps a robot 'see'?",
-                "answers": [
-                    "Camera",
-                    "Glasses",
-                    "Mirror",
-                    "Flashlight"
-                ],
-                "correct_answer": "Camera"
-            },
-            {
-                "question": "Which tech lets robots learn from data?",
-                "answers": [
-                    "Machine",
-                    "Wizard",
-                    "Giant",
-                    "Alien"
-                ],
-                "correct_answer": "Machine"
-            },
-            {
-                "question": "Where does 'robot' come from?",
-                "answers": [
-                    "Czech",
-                    "Moon",
-                    "Jungle",
-                    "Space"
-                ],
-                "correct_answer": "Czech"
-            },
-            {
-                "question": "Which part holds the software?",
-                "answers": [
-                    "Controller",
-                    "Pumpkin",
-                    "Balloon",
-                    "Broom"
-                ],
-                "correct_answer": "Controller"
-            },
-            {
-                "question": "Small robots are used for?",
-                "answers": [
-                    "Education",
-                    "Skating",
-                    "Fishing",
-                    "Climbing"
-                ],
-                "correct_answer": "Education"
-            },
-            {
-                "question": "Which robot part rotates?",
-                "answers": [
-                    "Joint",
-                    "Door",
-                    "Wheel",
-                    "Slide"
-                ],
-                "correct_answer": "Joint"
-            },
-            {
-                "question": "Which sensor detects sound?",
-                "answers": [
-                    "Microphone",
-                    "Drum",
-                    "Guitar",
-                    "Horn"
-                ],
-                "correct_answer": "Microphone"
-            },
-            {
-                "question": "Robots used at home are called?",
-                "answers": [
-                    "Domestic",
-                    "Circus",
-                    "Jungle",
-                    "Ocean"
-                ],
-                "correct_answer": "Domestic"
-            },
-            {
-                "question": "What part allows a robot to grasp?",
-                "answers": [
-                    "Gripper",
-                    "Monkey",
-                    "Tree",
-                    "Magic"
-                ],
-                "correct_answer": "Gripper"
-            }
-        ]
-    }    
+  "robotics": {
+    "questions": [
+      {
+        "question": "Which part of a robot helps it move?",
+        "answers": ["Motor", "Engine", "Rotor", "Banana"],
+        "correct_answer": "Motor"
+      },
+      {
+        "question": "What powers most robots?",
+        "answers": ["Battery", "Power", "Cell", "Pizza"],
+        "correct_answer": "Battery"
+      },
+      {
+        "question": "What do robots use to sense their environment?",
+        "answers": ["Sensors", "Detectors", "Monitors", "Ears"],
+        "correct_answer": "Sensors"
+      },
+      {
+        "question": "What is the brain of a robot called?",
+        "answers": ["Controller", "Processor", "Computer", "Apple"],
+        "correct_answer": "Controller"
+      },
+      {
+        "question": "What is the main purpose of a robot?",
+        "answers": ["Automation", "Decoration", "Entertainment", "Icecream"],
+        "correct_answer": "Automation"
+      },
+      {
+        "question": "What do robots need to follow instructions?",
+        "answers": ["Programming", "Coding", "Writing", "Cake"],
+        "correct_answer": "Programming"
+      },
+      {
+        "question": "What is a robot's vision system called?",
+        "answers": ["Camera", "Lens", "Eye", "Cookie"],
+        "correct_answer": "Camera"
+      },
+      {
+        "question": "What's a robot's ability to understand its surroundings?",
+        "answers": ["Perception", "Awareness", "Sensing", "Magic"],
+        "correct_answer": "Perception"
+      },
+      {
+        "question": "What's a robot's ability to move in different directions?",
+        "answers": ["Mobility", "Flexibility", "Agility", "Flying"],
+        "correct_answer": "Mobility"
+      },
+      {
+        "question": "What is a robot's ability to perform tasks called?",
+        "answers": ["Functionality", "Capability", "Operation", "Jumping"],
+        "correct_answer": "Functionality"
+      },
+      {
+        "question": "Which sensor detects light?",
+        "answers": ["Photocell", "Lightcell", "Brightcell", "Sandwich"],
+        "correct_answer": "Photocell"
+      },
+      {
+        "question": "Which sensor detects temperature?",
+        "answers": ["Thermistor", "Heatcell", "Warmcell", "Cookie"],
+        "correct_answer": "Thermistor"
+      },
+      {
+        "question": "Which sensor detects sound?",
+        "answers": ["Microphone", "Soundcell", "Earcapture", "Drum"],
+        "correct_answer": "Microphone"
+      },
+      {
+        "question": "Which sensor detects motion?",
+        "answers": ["Accelerometer", "Movercell", "Motioncell", "Marshmallow"],
+        "correct_answer": "Accelerometer"
+      },
+      {
+        "question": "What helps a robot maintain balance?",
+        "answers": ["Gyroscope", "Balancingcell", "Leveler", "Cucumber"],
+        "correct_answer": "Gyroscope"
+      },
+      {
+        "question": "What part of a robot holds tools?",
+        "answers": ["End-effector", "Toolholder", "Hand", "Waffle"],
+        "correct_answer": "End-effector"
+      },
+      {
+        "question": "What is the framework of a robot called?",
+        "answers": ["Chassis", "Frame", "Skeleton", "Biscuit"],
+        "correct_answer": "Chassis"
+      },
+      {
+        "question": "What is the process of giving a robot instructions called?",
+        "answers": ["Programming", "Coding", "Writing", "Drawing"],
+        "correct_answer": "Programming"
+      },
+      {
+        "question": "What is the main goal of FIRST LEGO League?",
+        "answers": ["Learning", "Playing", "Building", "Flying"],
+        "correct_answer": "Learning"
+      },
+      {
+        "question": "What do teams build in FIRST LEGO League?",
+        "answers": ["Robots", "Castles", "Machines", "Spaceships"],
+        "correct_answer": "Robots"
+      },
+      {
+        "question": "What is a core value of FIRST LEGO League?",
+        "answers": ["Teamwork", "Flying", "Cooperation", "Competition"],
+        "correct_answer": "Teamwork"
+      },
+      {
+        "question": "What's the name of the LEGO robotics programming language?",
+        "answers": ["Scratch", "Blocks", "Code", "Python"],
+        "correct_answer": "Scratch"
+      },
+      {
+        "question": "What is the brain of a LEGO robot called?",
+        "answers": ["Controller", "CPU", "Processor", "Heart"],
+        "correct_answer": "Controller"
+      }
+    ]
+  },
+  "math": {
+    "questions": [
+      {
+        "question": "6 + 7",
+        "answers": ["13", "12", "14", "11"]
+      },
+      {
+        "question": "15 - 5",
+        "answers": ["10", "9", "11", "8"]
+      },
+      {
+        "question": "3 * 4",
+        "answers": ["12", "11", "13", "10"]
+      },
+      {
+        "question": "20 / 5",
+        "answers": ["4", "5", "3", "6"]
+      },
+      {
+        "question": "9 - 3",
+        "answers": ["6", "7", "5", "8"]
+      },
+      {
+        "question": "2 * 5",
+        "answers": ["10", "9", "11", "8"]
+      },
+      {
+        "question": "18 / 3",
+        "answers": ["6", "5", "7", "4"]
+      },
+      {
+        "question": "8 + 4",
+        "answers": ["12", "11", "13", "10"]
+      },
+      {
+        "question": "14 - 7",
+        "answers": ["7", "6", "8", "5"]
+      },
+      {
+        "question": "5 * 3",
+        "answers": ["15", "14", "16", "13"]
+      }
+    ]
+  }
 }
