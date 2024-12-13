@@ -230,7 +230,8 @@ function drawEndScreen() {
 
 function keyPressed() {
   if (currentScreenState == 0) {
-    if (keyCode === " ".charCodeAt(0)) startNewGame();
+    if (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0))
+      startNewGame();
   } else if (currentScreenState == 1) {
     if (keyCode === "1".charCodeAt(0) || keyCode === "9".charCodeAt(0)) {
       shotMade(1);
@@ -240,7 +241,10 @@ function keyPressed() {
       shotMade(2);
     }
 
-    if (keyCode === " ".charCodeAt(0) && !swappedQuestions) {
+    if (
+      (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0)) &&
+      !swappedQuestions
+    ) {
       swappedQuestions = true;
       tempAnswer = rightAnswer;
       rightAnswer = leftAnswer;
@@ -256,7 +260,7 @@ function keyPressed() {
       changeScreenState();
     }
   } else if (currentScreenState == 2) {
-    if (keyCode === " ".charCodeAt(0)) {
+    if (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0)) {
       changeScreenState();
     }
   }
