@@ -40,8 +40,8 @@ if (isRaspberryPi()) {
   // https://stackoverflow.com/questions/78173749/use-raspberry-pi-4-gpio-with-node-js/78184108#78184108
   // GPIO18 -> 530
   // GPIO23 -> 535
-  const leftBasket = new Gpio(530, "in", "rising", { debounceTimeout: 10 });
-  const rightBasket = new Gpio(535, "in", "rising", { debounceTimeout: 10 });
+  const leftBasket = new Gpio(530, "in", "rising", { debounceTimeout: 530 });
+  const rightBasket = new Gpio(535, "in", "rising", { debounceTimeout: 535 });
 
   leftBasket.watch((err, value) => {
     if (err) {
