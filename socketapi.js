@@ -37,11 +37,17 @@ module.exports = socketapi;
 
 if (isRaspberryPi()) {
   console.log("Yup, this is a Raspberry Pi");
+  // https://github.com/fivdi/onoff
   // https://stackoverflow.com/questions/78173749/use-raspberry-pi-4-gpio-with-node-js/78184108#78184108
-  // GPIO18 -> 530
-  // GPIO23 -> 535
-  const leftBasket = new Gpio(530, "in", "rising", { debounceTimeout: 10 });
-  const rightBasket = new Gpio(535, "in", "rising", { debounceTimeout: 10 });
+  // GPIO17 -> ??? (pin 11)
+  // GPIO18 -> ??? (pin 12)
+  const leftBasket = new Gpio(528, "in", "falling", { debounceTimeout: 100 });
+  const rightBasket = new Gpio(534, "in", "falling", { debounceTimeout: 100 });
+
+  process.on("SIGINT", (_) => {
+    leftBasket.unexport();
+    rightBasket.unexport();
+  });
 
   leftBasket.watch((err, value) => {
     if (err) {

@@ -7,6 +7,7 @@ var currentScreen;
 var currentQuestion, currentAnswers;
 var wrongAnswer, correctAnswer, leftAnswer, rightAnswer;
 var gameStartTime;
+var questionStartTime;
 var shotClockStart;
 var swappedQuestions = false;
 
@@ -110,9 +111,9 @@ function drawScreen() {
 }
 
 function drawStartScreen() {
-  startScreen.background(100);
+  startScreen.background(0, 0, 0);
 
-  startScreen.textSize(200);
+  startScreen.textSize(150);
   startScreen.textStyle(BOLDITALIC);
   startScreen.textFont("Times New Roman");
   startScreen.fill("yellow");
@@ -120,20 +121,19 @@ function drawStartScreen() {
   startScreen.text(
     startText,
     width / 2 - startScreen.textWidth(startText) / 2,
-    height / 4
+    120
   );
 
-  startScreen.textSize(100);
-  startScreen.fill("yellow");
-  var startText = "by FTC Disaster Manager 13295";
+  startScreen.textSize(80);
+  var startText = "By FTC Disaster Management 13295";
   startScreen.text(
     startText,
     width / 2 - startScreen.textWidth(startText) / 2,
-    height / 2
+    230
   );
 
   var startButton = createButton("GET READY!");
-  startButton.position(width / 2 - 140, (height / 5) * 4);
+  startButton.position(width / 2 - 200, height / 2);
   startButton.style(
     "font-family:monospace; font-weight:bold; font-size:60px; padding:10px; border-radius:10px;"
   );
@@ -142,7 +142,8 @@ function drawStartScreen() {
 }
 
 function drawMainScreen() {
-  background(237, 178, 90);
+  background(0, 0, 0);
+  fill("white");
   textFont("Courier New");
   textStyle(BOLD);
 
@@ -157,37 +158,57 @@ function drawMainScreen() {
   if (seconds < 10) {
     seconds = "0" + seconds;
   }
-  var timerText = "Timer: " + minutes + ":" + seconds;
-  text(timerText, width / 2 - textWidth(timerText) / 2, 80);
+  var timerText = minutes + ":" + seconds;
+  text(timerText, width / 2 - textWidth(timerText) / 2, height / 2 + 200);
   currentTime = floor(millis() / 1000);
+
+  // show get ready text
+  textSize(40);
+  fill("white");
+  var getReadyText = "Get Ready! 3... ";
+  if (questionStartTime + 1000 < Date.now()) getReadyText += "2... ";
+  if (questionStartTime + 2000 < Date.now()) getReadyText += "1... ";
+  if (questionStartTime + 3000 < Date.now()) getReadyText = "Shoot or Swap!";
+  if (shotClockStart) {
+    getReadyText = "";
+  }
+  text(getReadyText, width / 2 - textWidth(getReadyText) / 2, 160);
+
+  // show scores
+  textSize(60);
+  fill("white");
+  var player1ScoreText = "P1: " + player1Score;
+  text(player1ScoreText, 400, height / 2 + 200);
+
+  var player2ScoreText = "P2: " + player2Score;
+  text(
+    player2ScoreText,
+    width - textWidth(player2ScoreText) - 400,
+    height / 2 + 200
+  );
 
   // show shot clock
   if (shotClockStart) {
     var shotTimer = Math.floor((Date.now() - shotClockStart) / 1000); // milliseconds elapsed since start
     var shotClock = 3 - shotTimer;
-    textSize(60);
-    var shotClockText = "Shot Clock: " + shotClock;
+    textSize(40);
+    fill("white");
+    var shotClockText = "Answers Swapped! Shot Clock: " + shotClock;
     text(shotClockText, width / 2 - textWidth(shotClockText) / 2, 160);
   }
 
-  // show scores
-  textSize(60);
-  var player1ScoreText = "Player 1: " + player1Score;
-  text(player1ScoreText, 10, 80);
-
-  var player2ScoreText = "Player 2: " + player2Score;
-  text(player2ScoreText, width - textWidth(player2ScoreText) - 10, 80);
-
   // show quiz question
   textSize(50);
-  text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, height / 2);
+  fill("yellow");
+  text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, 80);
 
   // show possible answers
-  textSize(80);
+  textSize(50);
+  fill("yellow");
   var leftAnswerText = currentAnswers[leftAnswer];
-  text(leftAnswerText, 10, height - 100);
+  text(leftAnswerText, 200, height / 2);
   var rightAnswerText = currentAnswers[rightAnswer];
-  text(rightAnswerText, width - textWidth(rightAnswerText) - 10, height - 100);
+  text(rightAnswerText, width - textWidth(rightAnswerText) - 200, height / 2);
 
   // if secondsElasped is greater than gameLength, change screen to endScreen
   if (secondsElapsed >= gameLength) {
@@ -196,54 +217,58 @@ function drawMainScreen() {
 }
 
 function drawEndScreen() {
-  endScreen.background(100);
-  endScreen.textSize(100);
+  endScreen.background(0, 0, 0);
+  endScreen.textSize(150);
   endScreen.textStyle(BOLDITALIC);
+  endScreen.textFont("Times New Roman");
   endScreen.fill("yellow");
-  endGameText = "Game Over";
 
   winnerText =
-    player1Score > player2Score ? "Player 1 wins!" : "Player 2 wins!";
+    player1Score > player2Score
+      ? "Game Over - Player 1 Wins!"
+      : "Game Over - Player 2 Wins!";
   // show winner or tie game if scores are equal
   if (player1Score === player2Score) {
-    winnerText = "Tie Game!";
+    winnerText = "Game Over - Tie Game!";
   }
-  endScreen.text(
-    endGameText,
-    width / 2 - endScreen.textWidth(endGameText) / 2,
-    height / 4
-  );
   endScreen.text(
     winnerText,
     width / 2 - endScreen.textWidth(winnerText) / 2,
-    height / 2
+    120
   );
 
   scoreText = player1Score + " - " + player2Score;
+  endScreen.textSize(80);
+  endScreen.fill("white");
   endScreen.text(
     scoreText,
     width / 2 - endScreen.textWidth(scoreText) / 2,
-    height / 2 + 100
+    230
   );
   image(endScreen, 0, 0);
 }
 
 function keyPressed() {
+  // if spacebar or B is pressed, start new game
   if (currentScreenState == 0) {
     if (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0))
       startNewGame();
   } else if (currentScreenState == 1) {
-    if (keyCode === "1".charCodeAt(0) || keyCode === "9".charCodeAt(0)) {
+    // if 1 is pressed, shot is made in basket 1
+    if (keyCode === "1".charCodeAt(0)) {
       shotMade(1);
     }
 
-    if (keyCode === "2".charCodeAt(0) || keyCode === "0".charCodeAt(0)) {
+    // if 2 is pressed, shot is made in basket 2
+    if (keyCode === "0".charCodeAt(0)) {
       shotMade(2);
     }
 
+    // if spacebar or B is pressed, swap questions
     if (
       (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0)) &&
-      !swappedQuestions
+      !swappedQuestions &&
+      Date.now() > questionStartTime + 3000
     ) {
       swappedQuestions = true;
       tempAnswer = rightAnswer;
@@ -256,10 +281,12 @@ function keyPressed() {
       shotClockStart = Date.now();
     }
 
+    // if 5 is pressed, change screen to endScreen
     if (keyCode === "5".charCodeAt(0)) {
       changeScreenState();
     }
   } else if (currentScreenState == 2) {
+    // if spacebar or B is pressed, change screen to startScreen
     if (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0)) {
       changeScreenState();
     }
@@ -276,23 +303,34 @@ function startNewGame() {
 
 function shotMade(basket) {
   if (!isGamePlaying) return;
+  if (Date.now() < questionStartTime + 3000) return;
   if (basket == 1) {
     if (leftAnswer == correctAnswer) {
       player1Score += 2;
-    } else {
-      player2Score += 1;
+      randomQuestion();
     }
+    // else {
+    //   if (swappedQuestions) {
+    //     player2Score += 1;
+    //     randomQuestion();
+    //   }
+    // }
   } else if (basket == 2) {
     if (rightAnswer == correctAnswer) {
       player2Score += 2;
-    } else {
-      player1Score += 1;
+      randomQuestion();
     }
+    // else {
+    //   if (swappedQuestions) {
+    //     player1Score += 1;
+    //     randomQuestion();
+    //   }
+    // }
   }
-  randomQuestion();
 }
 
 function randomQuestion() {
+  questionStartTime = Date.now();
   var questions = quiz["robotics"]["questions"];
   shotClockStart = null;
   var questionAnswerPair =
