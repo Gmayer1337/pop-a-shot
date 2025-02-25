@@ -1,9 +1,10 @@
 {
   "name": "basketball",
-  "version": "0.0.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "static": "node serve-static.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -16,6 +17,7 @@
     "npm": "^10.9.2",
     "onoff": "^6.0.3",
     "pug": "^3.0.3",
+    "serve-static": "^1.16.2",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "supervisor": "^0.12.0"

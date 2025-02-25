@@ -1,4 +1,13 @@
+var onPi = true;
+
 var socket = io();
+
+socket.on("connect_error", (err) => {
+  onPi = false;
+  console.log(`connect_error due to ${err.message}`);
+});
+
+var onPi = false;
 
 var currentScreenState;
 
@@ -36,7 +45,7 @@ async function loadQuiz() {
 loadQuiz();
 
 socket.on("basket", function (msg) {
-  shotMade(msg.num);
+  shotMade(msg.num, 0);
 });
 
 // this is only run once
@@ -118,11 +127,21 @@ function drawStartScreen() {
   startScreen.textFont("Times New Roman");
   startScreen.fill("yellow");
   var startText = "Quiz & Swish!";
+  if (!onPi) {
+    startText = "Quiz & Swish! Click!";
+  }
   startScreen.text(
     startText,
     width / 2 - startScreen.textWidth(startText) / 2,
     120
   );
+  if (!onPi) {
+    startScreen.stroke("red");
+    startScreen.strokeWeight(20);
+    startScreen.line(640, 120, 1100, 30);
+    startScreen.stroke("purple");
+    startScreen.strokeWeight(4);
+  }
 
   startScreen.textSize(80);
   var startText = "By FTC Disaster Management 13295";
@@ -150,52 +169,80 @@ function drawMainScreen() {
   var delta = Date.now() - gameStartTime; // milliseconds elapsed since start
   secondsElapsed = Math.floor(delta / 1000);
 
-  // show game timer
-  textSize(60);
-  var minutes = Math.floor((gameLength - secondsElapsed) / 60);
-  var seconds = (gameLength - secondsElapsed) % 60;
-  // pad seconds if less than 10
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-  var timerText = minutes + ":" + seconds;
-  text(timerText, width / 2 - textWidth(timerText) / 2, height / 2 + 200);
-  currentTime = floor(millis() / 1000);
-
   // show get ready text
   textSize(40);
   fill("white");
   var getReadyText = "Get Ready! 3... ";
   if (questionStartTime + 1000 < Date.now()) getReadyText += "2... ";
   if (questionStartTime + 2000 < Date.now()) getReadyText += "1... ";
-  if (questionStartTime + 3000 < Date.now()) getReadyText = "Shoot or Swap!";
+  if (questionStartTime + 3000 < Date.now())
+    getReadyText = onPi ? "Shoot or Swap!" : "Go!";
   if (shotClockStart) {
     getReadyText = "";
   }
   text(getReadyText, width / 2 - textWidth(getReadyText) / 2, 160);
 
-  // show scores
-  textSize(60);
-  fill("white");
-  var player1ScoreText = "P1: " + player1Score;
-  text(player1ScoreText, 400, height / 2 + 200);
+  // show game timer
+  var minutes = Math.floor((gameLength - secondsElapsed) / 60);
+  var seconds = (gameLength - secondsElapsed) % 60;
 
-  var player2ScoreText = "P2: " + player2Score;
-  text(
-    player2ScoreText,
-    width - textWidth(player2ScoreText) - 400,
-    height / 2 + 200
-  );
-
-  // show shot clock
-  if (shotClockStart) {
-    var shotTimer = Math.floor((Date.now() - shotClockStart) / 1000); // milliseconds elapsed since start
-    var shotClock = 3 - shotTimer;
-    textSize(40);
-    fill("white");
-    var shotClockText = "Answers Swapped! Shot Clock: " + shotClock;
-    text(shotClockText, width / 2 - textWidth(shotClockText) / 2, 160);
+  // calculate timer
+  // pad seconds if less than 10
+  if (seconds < 10) {
+    seconds = "0" + seconds;
   }
+  currentTime = floor(millis() / 1000);
+
+  // show scores, timer and shot clock if on Pi
+  if (onPi) {
+    textSize(60);
+    fill("white");
+    var player1ScoreText = "P1: " + player1Score;
+    text(player1ScoreText, 400, height / 2 + 200);
+
+    var player2ScoreText = "P2: " + player2Score;
+    text(
+      player2ScoreText,
+      width - textWidth(player2ScoreText) - 400,
+      height / 2 + 200
+    );
+
+    // show shot clock
+    if (shotClockStart) {
+      var shotTimer = Math.floor((Date.now() - shotClockStart) / 1000); // milliseconds elapsed since start
+      var shotClock = 3 - shotTimer;
+      textSize(40);
+      fill("white");
+      var shotClockText = "Answers Swapped! Shot Clock: " + shotClock;
+      text(shotClockText, width / 2 - textWidth(shotClockText) / 2, 160);
+    }
+
+    var timerText = minutes + ":" + seconds;
+    text(timerText, width / 2 - textWidth(timerText) / 2, height / 2 + 200);
+  }
+
+  // show scores, timer and shot clock if on computer
+  else {
+    textSize(80);
+    fill("white");
+    var player1ScoreText = "P1: " + player1Score;
+    text(player1ScoreText, 100, height - 150);
+
+    var player2ScoreText = "P2: " + player2Score;
+    text(
+      player2ScoreText,
+      width - textWidth(player2ScoreText) - 100,
+      height - 150
+    );
+
+    var timerText = minutes + ":" + seconds;
+    text(timerText, width / 2 - textWidth(timerText) / 2, height - 150);
+  }
+
+  // show game timer
+  textSize(60);
+  var minutes = Math.floor((gameLength - secondsElapsed) / 60);
+  var seconds = (gameLength - secondsElapsed) % 60;
 
   // show quiz question
   textSize(50);
@@ -254,14 +301,21 @@ function keyPressed() {
     if (keyCode === " ".charCodeAt(0) || keyCode === "B".charCodeAt(0))
       startNewGame();
   } else if (currentScreenState == 1) {
-    // if 1 is pressed, shot is made in basket 1
+    // if 1 or 9 is pressed, shot is made in basket 1
     if (keyCode === "1".charCodeAt(0)) {
-      shotMade(1);
+      shotMade(1, 1);
     }
 
-    // if 2 is pressed, shot is made in basket 2
+    if (keyCode === "2".charCodeAt(0)) {
+      shotMade(2, 1);
+    }
+
+    // if 0 or 2 is pressed, shot is made in basket 2
+    if (keyCode === "9".charCodeAt(0)) {
+      shotMade(1, 2);
+    }
     if (keyCode === "0".charCodeAt(0)) {
-      shotMade(2);
+      shotMade(2, 2);
     }
 
     // if spacebar or B is pressed, swap questions
@@ -301,12 +355,14 @@ function startNewGame() {
   randomQuestion();
 }
 
-function shotMade(basket) {
+function shotMade(basket, whoMadeIt) {
   if (!isGamePlaying) return;
   if (Date.now() < questionStartTime + 3000) return;
+
   if (basket == 1) {
     if (leftAnswer == correctAnswer) {
-      player1Score += 2;
+      if (whoMadeIt == 1 || whoMadeIt == 0) player1Score += 2;
+      if (whoMadeIt == 2) player2Score += 2;
       randomQuestion();
     }
     // else {
@@ -317,7 +373,8 @@ function shotMade(basket) {
     // }
   } else if (basket == 2) {
     if (rightAnswer == correctAnswer) {
-      player2Score += 2;
+      if (whoMadeIt == 1) player1Score += 2;
+      if (whoMadeIt == 2 || whoMadeIt == 0) player2Score += 2;
       randomQuestion();
     }
     // else {
