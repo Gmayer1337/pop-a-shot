@@ -2,12 +2,13 @@ var onPi = true;
 
 var socket = io();
 
-socket.on("connect_error", (err) => {
-  onPi = false;
-  console.log(`connect_error due to ${err.message}`);
-});
-
-var onPi = false;
+if (onPi) {
+  socket.on("connect_error", (err) => {
+    onPi = false;
+    socket.close();
+    console.log(`Failed to connect to Pi - switching to local ${err.message}`);
+  });
+}
 
 var currentScreenState;
 
@@ -32,6 +33,11 @@ var player1Score = 0;
 var player2Score = 0;
 var quiz;
 var gameLength = 45;
+
+// game pad variables
+let controllers = [];
+var released = [];
+var pressed = [];
 
 async function loadQuiz() {
   try {
@@ -62,6 +68,54 @@ function setup() {
   currentGameState = 0;
   currentScreenState = 0;
   isGamePlaying = false;
+
+  window.addEventListener("gamepadconnected", function (e) {
+    gamepadHandler(e, true);
+    console.log(
+      "Gamepad connected at index %d: %s. %d buttons, %d axes.",
+      e.gamepad.index,
+      e.gamepad.id,
+      e.gamepad.buttons.length,
+      e.gamepad.axes.length
+    );
+  });
+  window.addEventListener("gamepaddisconnected", function (e) {
+    console.log(
+      "Gamepad disconnected from index %d: %s",
+      e.gamepad.index,
+      e.gamepad.id
+    );
+    colour = color(120, 0, 0);
+    gamepadHandler(e, false);
+  });
+  for (var i = 0; i < 17; i++) {
+    released[i] = true;
+    pressed[i] = false;
+  }
+}
+
+function gamepadHandler(event, connecting) {
+  let gamepad = event.gamepad;
+  if (connecting) {
+    print("Connecting to controller " + gamepad.index);
+    controllers[gamepad.index] = gamepad;
+  } else {
+    delete controllers[gamepad.index];
+  }
+}
+
+function buttonPressed(controller, index) {
+  var b = controller.buttons[index];
+  if (typeof b == "object") {
+    if (b.pressed) {
+      pressed[index] = true;
+      return false;
+    } else if (!b.pressed && pressed[index]) {
+      pressed[index] = false;
+      return true;
+    }
+    return false;
+  }
 }
 
 function draw() {
@@ -153,6 +207,9 @@ function drawStartScreen() {
 
   var startButton = createButton("GET READY!");
   startButton.position(width / 2 - 200, height / 2);
+  startButton.size(400, 100);
+  startButton.style("font-size", "40px");
+  startButton.style("background-color", "yellow");
   startButton.mousePressed(startNewGame);
   image(startScreen, 0, 0);
 }
@@ -292,6 +349,36 @@ function drawEndScreen() {
   image(endScreen, 0, 0);
 }
 
+// use https://hardwaretester.com/gamepad to figure out button indexes
+function checkGamepad() {
+  var gamepads = navigator.getGamepads();
+
+  for (let i in controllers) {
+    let controller = gamepads[i];
+    // if A game pad button is pressed, start new game
+    if (currentScreenState == 0) {
+      if (buttonPressed(controller, 0)) startNewGame();
+    } else if (currentScreenState == 1) {
+      if (buttonPressed(controller, 0)) {
+        shotMade(1, 1);
+      }
+
+      if (buttonPressed(controller, 1)) {
+        shotMade(2, 1);
+      }
+
+      if (buttonPressed(controller, 2)) {
+        shotMade(1, 2);
+      }
+      if (buttonPressed(controller, 3)) {
+        shotMade(2, 2);
+      }
+    } else if (currentScreenState == 2) {
+      if (buttonPressed(controller, 0)) changeScreenState();
+    }
+  }
+}
+
 function keyPressed() {
   // if spacebar or B is pressed, start new game
   if (currentScreenState == 0) {
@@ -301,6 +388,7 @@ function keyPressed() {
     // if 1 or 9 is pressed, shot is made in basket 1
     if (keyCode === "1".charCodeAt(0)) {
       shotMade(1, 1);
+      released[0] = false;
     }
 
     if (keyCode === "2".charCodeAt(0)) {
@@ -405,8 +493,8 @@ function randomQuestion() {
 function startGameTimer() {
   setInterval(function () {
     drawScreen(currentScreenState);
+    checkGamepad();
   }, 100);
 }
-
 
 startGameTimer();
