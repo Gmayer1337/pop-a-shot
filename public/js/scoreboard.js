@@ -39,6 +39,13 @@ let controllers = [];
 var released = [];
 var pressed = [];
 
+
+function preload() {
+  splashImage = loadImage("images/splash.jpg");
+  backgroundImage = loadImage("images/background.jpg");
+  gameOverImage = loadImage("images/gameover.jpg");
+}
+
 async function loadQuiz() {
   try {
     const response = await fetch("js/quizdata.json");
@@ -174,35 +181,20 @@ function drawScreen() {
 }
 
 function drawStartScreen() {
-  startScreen.background(0, 0, 0);
-
   startScreen.textSize(150);
   startScreen.textStyle(BOLDITALIC);
   startScreen.textFont("Times New Roman");
-  startScreen.fill("yellow");
-  var startText = "Quiz & Swish!";
-  if (!onPi) {
-    startText = "Quiz & Swish! Click!";
-  }
-  startScreen.text(
-    startText,
-    width / 2 - startScreen.textWidth(startText) / 2,
-    120
-  );
-  if (!onPi) {
-    startScreen.stroke("red");
-    startScreen.strokeWeight(20);
-    startScreen.line(640, 120, 1100, 30);
-    startScreen.stroke("purple");
-    startScreen.strokeWeight(4);
-  }
 
+  startScreen.image(splashImage, 0, 0, width, height);
+  startScreen.fill("yellow");
+  startScreen.stroke("purple");
+  startScreen.strokeWeight(10);
   startScreen.textSize(80);
-  var startText = "By FTC Disaster Management 13295";
+  var startText = "by FTC Disaster Management 13295";
   startScreen.text(
     startText,
     width / 2 - startScreen.textWidth(startText) / 2,
-    230
+    height / 2 + height / 4
   );
 
   var startButton = createButton("GET READY!");
@@ -210,12 +202,15 @@ function drawStartScreen() {
   startButton.size(400, 100);
   startButton.style("font-size", "40px");
   startButton.style("background-color", "yellow");
+  startButton.style("color", "purple");
   startButton.mousePressed(startNewGame);
+
   image(startScreen, 0, 0);
 }
 
 function drawMainScreen() {
-  background(0, 0, 0);
+  image(backgroundImage, 0, 0, width, height);
+
   fill("white");
   textFont("Courier New");
   textStyle(BOLD);
@@ -280,17 +275,17 @@ function drawMainScreen() {
     textSize(80);
     fill("white");
     var player1ScoreText = "P1: " + player1Score;
-    text(player1ScoreText, 100, height - 150);
+    text(player1ScoreText, 100, height - 10);
 
     var player2ScoreText = "P2: " + player2Score;
     text(
       player2ScoreText,
       width - textWidth(player2ScoreText) - 100,
-      height - 150
+      height - 10
     );
 
     var timerText = minutes + ":" + seconds;
-    text(timerText, width / 2 - textWidth(timerText) / 2, height - 150);
+    text(timerText, width / 2 - textWidth(timerText) / 2, height - 10);
   }
 
   // show game timer
@@ -300,12 +295,12 @@ function drawMainScreen() {
 
   // show quiz question
   textSize(50);
-  fill("yellow");
+  fill("white");
   text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, 80);
 
   // show possible answers
-  textSize(50);
-  fill("yellow");
+  textSize(70);
+  fill("white");
   var leftAnswerText = currentAnswers[leftAnswer];
   text(leftAnswerText, 200, height / 2);
   var rightAnswerText = currentAnswers[rightAnswer];
@@ -318,16 +313,19 @@ function drawMainScreen() {
 }
 
 function drawEndScreen() {
-  endScreen.background(0, 0, 0);
-  endScreen.textSize(150);
-  endScreen.textStyle(BOLDITALIC);
-  endScreen.textFont("Times New Roman");
+  endScreen.image(gameOverImage, 0, 0, width, height);
   endScreen.fill("yellow");
+  endScreen.stroke("purple");
+  endScreen.strokeWeight(10);
+  endScreen.textSize(80);
+
+  // endScreen.textSize(150);
+  // endScreen.textStyle(BOLDITALIC);
+  // endScreen.textFont("Times New Roman");
+  // endScreen.fill("yellow");
 
   winnerText =
-    player1Score > player2Score
-      ? "Game Over - Player 1 Wins!"
-      : "Game Over - Player 2 Wins!";
+    player1Score > player2Score ? "Player 1 Wins!" : "Player 2 Wins!";
   // show winner or tie game if scores are equal
   if (player1Score === player2Score) {
     winnerText = "Game Over - Tie Game!";
@@ -335,16 +333,15 @@ function drawEndScreen() {
   endScreen.text(
     winnerText,
     width / 2 - endScreen.textWidth(winnerText) / 2,
-    120
+    height / 2 + height / 4 + 100
   );
 
-  scoreText = player1Score + " - " + player2Score;
-  endScreen.textSize(80);
-  endScreen.fill("white");
+  scoreText = player1Score + " — " + player2Score;
+  endScreen.textSize(120);
   endScreen.text(
     scoreText,
-    width / 2 - endScreen.textWidth(scoreText) / 2,
-    230
+    width / 2 - endScreen.textWidth(scoreText) / 2 + 30,
+    275
   );
   image(endScreen, 0, 0);
 }
