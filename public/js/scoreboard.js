@@ -299,7 +299,7 @@ function drawMainScreen() {
   text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, 80);
 
   // show possible answers
-  textSize(70);\
+  textSize(70);
   stroke("white");
   strokeWeight(10);
   fill("#0B03FF");
