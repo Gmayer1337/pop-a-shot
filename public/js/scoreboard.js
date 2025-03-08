@@ -364,10 +364,10 @@ function checkGamepad() {
         shotMade(2, 1);
       }
 
-      if (buttonPressed(controller, 2)) {
+      if (buttonPressed(controller, 4)) {
         shotMade(1, 2);
       }
-      if (buttonPressed(controller, 3)) {
+      if (buttonPressed(controller, 5)) {
         shotMade(2, 2);
       }
     } else if (currentScreenState == 2) {
