@@ -354,7 +354,7 @@ function checkGamepad() {
     let controller = gamepads[i];
     // if A game pad button is pressed, start new game
     if (currentScreenState == 0) {
-      if (buttonPressed(controller, 0)) startNewGame();
+      if (buttonPressed(controller, 9)) startNewGame();
     } else if (currentScreenState == 1) {
       if (buttonPressed(controller, 0)) {
         shotMade(1, 1);
@@ -371,7 +371,7 @@ function checkGamepad() {
         shotMade(2, 2);
       }
     } else if (currentScreenState == 2) {
-      if (buttonPressed(controller, 0)) changeScreenState();
+      if (buttonPressed(controller, 9)) changeScreenState();
     }
   }
 }
