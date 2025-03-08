@@ -299,11 +299,13 @@ function drawMainScreen() {
   text(currentQuestion, width / 2 - textWidth(currentQuestion) / 2, 80);
 
   // show possible answers
-  textSize(70);
-  fill("blue");
+  textSize(70);\
+  stroke("white");
+  strokeWeight(10);
+  fill("#0B03FF");
   var leftAnswerText = currentAnswers[leftAnswer];
   text(leftAnswerText, 200, height / 2); 
-  fill("green");
+  fill("#01F105");
   var rightAnswerText = currentAnswers[rightAnswer];
   text(rightAnswerText, width - textWidth(rightAnswerText) - 200, height / 2);
 
