@@ -300,9 +300,10 @@ function drawMainScreen() {
 
   // show possible answers
   textSize(70);
-  fill("white");
+  fill("blue");
   var leftAnswerText = currentAnswers[leftAnswer];
-  text(leftAnswerText, 200, height / 2);
+  text(leftAnswerText, 200, height / 2); 
+  fill("green");
   var rightAnswerText = currentAnswers[rightAnswer];
   text(rightAnswerText, width - textWidth(rightAnswerText) - 200, height / 2);
 
