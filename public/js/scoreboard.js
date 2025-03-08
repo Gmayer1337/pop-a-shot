@@ -301,13 +301,14 @@ function drawMainScreen() {
   // show possible answers
   textSize(70);
   stroke("white");
-  strokeWeight(10);
+  strokeWeight(5);
   fill("#0B03FF");
   var leftAnswerText = currentAnswers[leftAnswer];
   text(leftAnswerText, 200, height / 2); 
   fill("#01F105");
   var rightAnswerText = currentAnswers[rightAnswer];
   text(rightAnswerText, width - textWidth(rightAnswerText) - 200, height / 2);
+  strokeWeight(0);
 
   // if secondsElasped is greater than gameLength, change screen to endScreen
   if (secondsElapsed >= gameLength) {
