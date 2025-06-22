@@ -2,6 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: black;
+  overflow: hidden;
 }
 
 a {
@@ -10,4 +12,9 @@ a {
 
 canvas {
   display: block;
+}
+
+* {
+    padding: 0;
+    margin: 0;
 }

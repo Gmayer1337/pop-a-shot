@@ -30,7 +30,7 @@ watch -n.2 gpio readall
 
 Command line to launch Chromium in 'kiosk mode'
 ```
-Microsoft Edge % "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" http://localhost:3000 --kiosk  --edge-kiosk-type=public-browsing --no-first-run
+Microsoft Edge on Mac % "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" http://localhost:3000 --kiosk  --edge-kiosk-type=public-browsing --no-first-run
 ```
 
 ## Team game brainstorming ideas
